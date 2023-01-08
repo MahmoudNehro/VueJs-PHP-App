@@ -1,0 +1,13 @@
+{
+    "autoload": 
+       {
+           "psr-4": 
+              {
+                  "Database\\" : "database/",
+                  "Models\\" : "models/",
+                  "Routers\\" : "routers/",
+                  "Config\\" : "config/",
+                  "Controllers\\" : "controllers/"
+              }
+       }
+}
