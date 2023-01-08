@@ -30,47 +30,40 @@ class Product extends Model
           ";
     $stmt = $this->connection->prepare($query);
     $stmt->execute();
-
-    $rowCount = $stmt->rowCount();
-    if ($rowCount > 0) {
-      $products_array = array();
-      $products_array['data'] = array();
-      $attributes = array();
-      $i = 0;
-      while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-        extract($row);
-        if (isset($attributes[$i - 1]) && $attributes[$i - 1]['product_id'] != $id) {
-          unset($attributes[$i - 1]);
-        }
-        $attributeItem = array(
-          'product_id' => $id,
-          'attribute_name' => $attribute_name,
-          'unit_name' => $unit_name,
-          'value' => $value
-
-        );
-
-        array_push($attributes, $attributeItem);
-
-        $product_item = array(
-          'id' => $id,
-          'name' => $name,
-          'sku' => $sku,
-          'price' => $price,
-          'category_id' => $category_id,
-          'category_name' => $category_name,
-          'attribute_items' => array_values($attributes)
-        );
-
-
-        $products_array['data'][$id] =  $product_item;
-        $i++;
+    $products_array = array();
+    $products_array['data'] = array();
+    $attributes = array();
+    $i = 0;
+    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+      extract($row);
+      if (isset($attributes[$i - 1]) && $attributes[$i - 1]['product_id'] != $id) {
+        unset($attributes[$i - 1]);
       }
-      $products_array['data'] = array_values($products_array['data']);
-    } else {
-      $products_array = array();
-      $products_array['data'] = array();
+      $attributeItem = array(
+        'product_id' => $id,
+        'attribute_name' => $attribute_name,
+        'unit_name' => $unit_name,
+        'value' => $value
+
+      );
+
+      array_push($attributes, $attributeItem);
+
+      $product_item = array(
+        'id' => $id,
+        'name' => $name,
+        'sku' => $sku,
+        'price' => $price,
+        'category_id' => $category_id,
+        'category_name' => $category_name,
+        'attribute_items' => array_values($attributes)
+      );
+
+      $products_array['data'][$id] =  $product_item;
+      $i++;
     }
+    $products_array['data'] = array_values($products_array['data']);
+
     return $products_array;
   }
   public function create(array $data)
