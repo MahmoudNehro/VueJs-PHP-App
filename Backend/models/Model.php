@@ -38,7 +38,5 @@ abstract class Model
     }
     abstract public function all();
     abstract public function create(array $data);
-    abstract public function find(int $id);
-    abstract public function delete(int $id);
     abstract public function deleteAll(array $ids);
 }

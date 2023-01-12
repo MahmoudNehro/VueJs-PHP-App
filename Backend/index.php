@@ -1,6 +1,7 @@
 <?php
 
 use Database\MySQLConnection;
+
 require_once('config/env.php');
 require_once('vendor/autoload.php');
 header('Access-Control-Allow-Origin: *');

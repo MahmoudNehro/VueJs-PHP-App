@@ -68,14 +68,42 @@ class Product extends Model
   }
   public function create(array $data)
   {
-  }
-  public function delete(int $id)
-  {
+    $query = "INSERT INTO {$this->table} ({$this->properties[1]}, {$this->properties[2]}, {$this->properties[3]} ,
+     {$this->properties[4]}) VALUES (:name, :sku, :price, :category_id)";
+    $stmt = $this->connection->prepare($query);
+    //validation 
+    $name = htmlspecialchars(strip_tags($_POST['name']));
+    $sku = htmlspecialchars(strip_tags($_POST['sku']));
+    $price = htmlspecialchars(strip_tags($_POST['price']));
+    $category_id = htmlspecialchars(strip_tags($_POST['category_id']));
+    $attributes = $_POST['attributes'];
+    $columnsNumber = count($attributes[0]);
+    $rowsNumber = count($attributes);
+    $stmt->bindParam(':name', $name);
+    $stmt->bindParam(':sku', $sku);
+    $stmt->bindParam(':price', $price);
+    $stmt->bindParam(':category_id', $category_id);
+    if ($stmt->execute()) {
+      $product_id = $this->connection->lastInsertId();
+      $queryAttributes = "INSERT INTO attribute_product (product_id, attribute_id, value) VALUES(?, ?, ?) , (?, ?, ?)";
+      $stmtAttributes = $this->connection->prepare($queryAttributes);
+      $stmtAttributes->bindParam(1, $product_id);
+      $stmtAttributes->bindParam(2, $attributes[0]['id']);
+      $stmtAttributes->bindParam(3, $attributes[0]['value']);
+      $stmtAttributes->bindParam(4, $product_id);
+      $stmtAttributes->bindParam(5, $attributes[1]['id']);
+      $stmtAttributes->bindParam(6, $attributes[1]['value']);
+      $stmtAttributes->execute();
+
+      return true;
+    }
+    printf("Error: %s.\n", $stmt->errorInfo());
+    return false;
   }
   public function deleteAll(array $ids)
   {
-  }
-  public function find(int $id)
-  {
+    $query = "DELETE FROM {$this->table} WHERE id IN  (" . implode(',', $ids) . " )";
+    $stmt = $this->connection->prepare($query);
+    $stmt->execute();
   }
 }

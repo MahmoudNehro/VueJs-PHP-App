@@ -35,7 +35,19 @@ class ProductController
     {
         $product = new Product($connection);
         $result = $product->all();
-        echo(json_encode($result));
-    
+        echo (json_encode($result));
+    }
+
+    public function delete($connection)
+    {
+        $product = new Product($connection);
+        $productIds =  $_GET['product_ids'];
+        $result = $product->deleteAll($productIds);
+        // echo(json_encode($result));
+    }
+    public function store($connection) {
+        $product = new Product($connection);
+        
+        $result = $product->create($_POST);
     }
 }
