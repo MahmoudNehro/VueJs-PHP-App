@@ -12,8 +12,12 @@ class Router
     public static function get(string $url, callable $function)
     {
         $method = $_SERVER['REQUEST_METHOD'];
+        $request = explode("/", substr(@$_SERVER['PATH_INFO'], 1));
 
         if (strtolower($method) === strtolower(Methods::GET->value) && substr($_SERVER['PATH_INFO'], 1) === $url) {
+            $function();
+            die();
+        } else if (strtolower($method) === strtolower(Methods::GET->value) && isset($request[1])) {
             $function();
             die();
         } else {
