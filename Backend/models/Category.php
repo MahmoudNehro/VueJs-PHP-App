@@ -51,7 +51,16 @@ class Category extends Model
     $category_item['data'] = array();
     $attributes = array();
     $i = 0;
+    if($stmt->rowCount()<=0) {
+      http_response_code(404);
+      echo json_encode(
+        array("message" => "No category found.")
+      );
+      die();
+
+    }
     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+     
       extract($row);
       $attributeItem = array(
         'attribute_name' => $attribute_name,
