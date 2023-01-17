@@ -3,7 +3,7 @@
 namespace Routers;
 
 use Config\Methods;
-use Config\Urls;
+use Helpers\ApiResponse;
 
 class Router
 {
@@ -21,9 +21,8 @@ class Router
             $function();
             die();
         } else {
-            header('HTTP/1.0 404 Not Found', true, 404);
             $response = ['message' => 'the get request not found'];
-            echo (json_encode($response));
+            ApiResponse::response($response, 404, 'method not supported');
 
             die();
         }
@@ -36,9 +35,8 @@ class Router
             $function();
             die();
         } else {
-            header('HTTP/1.0 404 Not Found', true, 404);
             $response = ['message' => 'the delete request not found'];
-            echo (json_encode($response));
+            ApiResponse::response($response, 404, 'method not supported');
             die();
         }
     }
@@ -50,10 +48,8 @@ class Router
             $function();
             die();
         } else {
-            header('HTTP/1.0 404 Not Found', true, 404);
             $response = ['message' => 'the post request not found'];
-            echo (json_encode($response));
-            die();
+            ApiResponse::response($response, 404, 'method not supported');
         }
     }
 }

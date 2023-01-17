@@ -2,15 +2,17 @@
 
 namespace Requests;
 
+use Database\MySQLConnection;
+
 class ProductRequest implements ValidateContract
 {
 
 
-    public function __construct(protected ?array $rules = null)
+    public function __construct(protected ?array $rules = null , protected $connection)
     {
         $this->rules = $this->rules ?? [
             'name' => 'required',
-            'sku' => 'required',
+            'sku' => 'required|unique:products,sku',
             'price' => 'required|numeric',
             'category_id' => 'required|numeric',
             'attributes' => 'array|required',
@@ -58,6 +60,20 @@ class ProductRequest implements ValidateContract
                                 $errors[$key] = 'value must be numeric';
                             }
                         }
+                    }
+                }
+                if ($rule == 'unique:products,sku') {
+                    $table = substr($rule, strpos($rule, ':') + 1);
+                    $table = explode(',', $table);
+                    $table = $table[0];
+                    $column = $table[1];
+                    $query = "SELECT * FROM $table WHERE sku = :$column";
+                    $stmt = $this->connection->prepare($query);
+                    $stmt->execute([$column => $data[$key]]);
+                    $result = $stmt->fetch();
+                    $stmt->closeCursor();
+                    if ($result) {
+                        $errors[$key] = $key . ' already exists';
                     }
                 }
             }

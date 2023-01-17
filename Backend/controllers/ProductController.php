@@ -5,6 +5,7 @@ namespace Controllers;
 use Models\Product;
 use Requests\ProductDeleteRequest;
 use Requests\ProductRequest;
+use Helpers\ApiResponse;
 
 class ProductController
 {
@@ -37,28 +38,35 @@ class ProductController
     {
         $product = new Product($connection);
         $result = $product->all();
-        echo (json_encode($result));
+        ApiResponse::response($result, 200, 'success');
     }
-
     public function delete($connection)
     {
         $product = new Product($connection);
-        $productIds =  $_GET;
         $request = new ProductDeleteRequest();
-        $validated = $request->validate($productIds);
-        echo (json_encode($validated));
-        die();
-
-        $result = $product->deleteAll($productIds);
-        // echo(json_encode($result));
+        $errors = $request->validate($_GET);
+        if (count($errors) > 0) {
+            ApiResponse::response($errors, 400, 'error');
+            die();
+        }
+        $validated =  $_GET['product_ids'];
+        $result = $product->deleteAll($validated);
+        if ($result) {
+            ApiResponse::response($result, 200, 'success');
+        } else {
+            ApiResponse::response($result, 404, 'Not found');
+        }
     }
     public function store($connection)
     {
         $product = new Product($connection);
-        $request = new ProductRequest();
+        $request = new ProductRequest(null,$connection);
         $validated = $request->validate($_POST);
-        echo (json_encode($validated));
-        die();
+        if (count($validated) > 0) {
+            ApiResponse::response($validated, 400, 'error');
+            die();
+        }
         $result = $product->create($validated);
+        ApiResponse::response($result, 200, 'success');
     }
 }

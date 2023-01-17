@@ -8,7 +8,8 @@
                   "Routers\\" : "routers/",
                   "Config\\" : "config/",
                   "Controllers\\" : "controllers/",
-                  "Requests\\" : "requests/"
+                  "Requests\\" : "requests/",
+                  "Helpers\\" : "helpers/"
               }
        }
 }

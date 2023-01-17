@@ -4,7 +4,7 @@ use Config\Methods;
 use Config\Urls;
 use Controllers\ProductController;
 use Routers\Router;
-
+use Helpers\ApiResponse;
 $productController = ProductController::getInstance();
 
 
@@ -25,8 +25,6 @@ switch ($method) {
         });
         break;
     default:
-        header('HTTP/1.0 404 Not Found', true, 404);
-        $response = ['message' => 'method not supported'];
-        echo (json_encode($response));
+        ApiResponse::response($response, 404, 'method not supported');
         die();
 }

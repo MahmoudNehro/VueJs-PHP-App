@@ -62,48 +62,50 @@ class Product extends Model
       $products_array['data'][$id] =  $product_item;
       $i++;
     }
-    $products_array['data'] = array_values($products_array['data']);
-
-    return $products_array;
+    return array_values($products_array['data']);
   }
   public function create(array $data)
   {
     $query = "INSERT INTO {$this->table} ({$this->properties[1]}, {$this->properties[2]}, {$this->properties[3]} ,
      {$this->properties[4]}) VALUES (:name, :sku, :price, :category_id)";
     $stmt = $this->connection->prepare($query);
-    //validation 
-    $name = htmlspecialchars(strip_tags($_POST['name']));
-    $sku = htmlspecialchars(strip_tags($_POST['sku']));
-    $price = htmlspecialchars(strip_tags($_POST['price']));
-    $category_id = htmlspecialchars(strip_tags($_POST['category_id']));
+    $name = $this->sanitize($_POST['name']);
+    $sku = $this->sanitize($_POST['sku']);
+    $price = $this->sanitize($_POST['price']);
+    $category_id = $this->sanitize($_POST['category_id']);
     $attributes = $_POST['attributes'];
-    $columnsNumber = count($attributes[0]);
-    $rowsNumber = count($attributes);
     $stmt->bindParam(':name', $name);
     $stmt->bindParam(':sku', $sku);
     $stmt->bindParam(':price', $price);
     $stmt->bindParam(':category_id', $category_id);
-    if ($stmt->execute()) {
-      $product_id = $this->connection->lastInsertId();
-      $queryAttributes = "INSERT INTO attribute_product (product_id, attribute_id, value) VALUES(?, ?, ?) , (?, ?, ?)";
-      $stmtAttributes = $this->connection->prepare($queryAttributes);
-      $stmtAttributes->bindParam(1, $product_id);
-      $stmtAttributes->bindParam(2, $attributes[0]['id']);
-      $stmtAttributes->bindParam(3, $attributes[0]['value']);
-      $stmtAttributes->bindParam(4, $product_id);
-      $stmtAttributes->bindParam(5, $attributes[1]['id']);
-      $stmtAttributes->bindParam(6, $attributes[1]['value']);
-      $stmtAttributes->execute();
-
-      return true;
+    $stmt->execute();
+    $product_id = $this->connection->lastInsertId();
+    
+    $query = "INSERT INTO attribute_product (product_id, attribute_id, value) VALUES (:product_id, :attribute_id, :value)";
+    $stmt = $this->connection->prepare($query);
+    foreach ($attributes as $attribute) {
+      $attribute_id = $this->sanitize($attribute['attribute_id']);
+      $value = $this->sanitize($attribute['value']);
+      $stmt->bindParam(':product_id', $product_id);
+      $stmt->bindParam(':attribute_id', $attribute_id);
+      $stmt->bindParam(':value', $value);
+      $stmt->execute();
     }
-    printf("Error: %s.\n", $stmt->errorInfo());
-    return false;
   }
   public function deleteAll(array $ids)
   {
     $query = "DELETE FROM {$this->table} WHERE id IN  (" . implode(',', $ids) . " )";
     $stmt = $this->connection->prepare($query);
     $stmt->execute();
+
+    $rows = $stmt->rowCount();
+
+    return (bool) $rows;
+  }
+
+  public function sanitize($data)
+  {
+    $data = htmlspecialchars(strip_tags($data));
+    return $data;
   }
 }
