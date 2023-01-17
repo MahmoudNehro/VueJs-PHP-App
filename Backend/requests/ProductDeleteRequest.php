@@ -2,9 +2,11 @@
 
 namespace Requests;
 
+use PDO;
+
 class ProductDeleteRequest implements ValidateContract
 {
-    public function __construct(protected ?array $rules = null)
+    public function __construct(protected ?array $rules = null,protected ?PDO $connection = null)
     {
         $this->rules = $this->rules ?? [
             'product_ids' => 'array|required',

@@ -3,12 +3,13 @@
 namespace Requests;
 
 use Database\MySQLConnection;
+use PDO;
 
 class ProductRequest implements ValidateContract
 {
 
 
-    public function __construct(protected ?array $rules = null , protected $connection)
+    public function __construct(protected ?array $rules = null , protected ?PDO $connection= null)
     {
         $this->rules = $this->rules ?? [
             'name' => 'required',

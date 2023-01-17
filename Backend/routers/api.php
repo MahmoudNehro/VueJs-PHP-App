@@ -8,7 +8,7 @@ $request = explode("/", substr(@$_SERVER['PATH_INFO'], 1));
 $method = strtolower($_SERVER['REQUEST_METHOD']);
 
 if (!in_array($request[0], array_column(Urls::cases(), 'value'))) {
-    ApiResponse::response($response, 404, 'url not found');
+    ApiResponse::response('not found', 404, 'url not found');
     die();
 }
 switch ($request[0]) {
@@ -19,7 +19,7 @@ switch ($request[0]) {
         include __DIR__ . '/categories.php';
         break;
     default:
-        ApiResponse::response($response, 404, 'url not found');
+        ApiResponse::response('not found', 404, 'url not found');
 
         die();
 

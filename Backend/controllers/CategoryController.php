@@ -3,6 +3,8 @@
 namespace Controllers;
 
 use Models\Category;
+use Helpers\ApiResponse;
+use Requests\CategoryRequest;
 
 class CategoryController
 {
@@ -35,12 +37,18 @@ class CategoryController
     {
         $category = new Category($connection);
         $result = $category->all();
-        echo (json_encode($result));
+        ApiResponse::response($result, 200, 'success');
     }
     public function show($connection,$id) {
         $category = new Category($connection);
+        $request = new CategoryRequest();
+        $errors = $request->validate(['id' => $id]);
+        if (count($errors) > 0) {
+            ApiResponse::response($errors, 400, 'category id not correct');
+            die();
+        }
         $result = $category->find($id);
-        echo (json_encode($result));
+        ApiResponse::response($result, 200, 'success');
 
     }
 

@@ -3,6 +3,7 @@
 namespace Models;
 
 use PDO;
+use Helpers\ApiResponse;
 
 class Category extends Model
 {
@@ -51,16 +52,13 @@ class Category extends Model
     $category_item['data'] = array();
     $attributes = array();
     $i = 0;
-    if($stmt->rowCount()<=0) {
+    if ($stmt->rowCount() <= 0) {
       http_response_code(404);
-      echo json_encode(
-        array("message" => "No category found.")
-      );
+      ApiResponse::response('error', 404, 'Category not found');
       die();
-
     }
     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-     
+
       extract($row);
       $attributeItem = array(
         'attribute_name' => $attribute_name,
@@ -80,8 +78,7 @@ class Category extends Model
       $cateogry_array['data'][$id] =  $categoryOneItem;
       $i++;
     }
-    $category_item['data'] = array_values($cateogry_array['data']);
 
-    return $category_item;
+    return array_values($cateogry_array['data']);
   }
 }
