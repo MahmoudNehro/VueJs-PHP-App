@@ -84,7 +84,7 @@ class Product extends Model
     $query = "INSERT INTO attribute_product (product_id, attribute_id, value) VALUES (:product_id, :attribute_id, :value)";
     $stmt = $this->connection->prepare($query);
     foreach ($attributes as $attribute) {
-      $attribute_id = $this->sanitize($attribute['attribute_id']);
+      $attribute_id = $this->sanitize($attribute['id']);
       $value = $this->sanitize($attribute['value']);
       $stmt->bindParam(':product_id', $product_id);
       $stmt->bindParam(':attribute_id', $attribute_id);
