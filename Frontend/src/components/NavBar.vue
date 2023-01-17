@@ -1,7 +1,10 @@
 <script setup>
 defineProps({
-  name: {
+  pageName: {
     type: String,
+    required: true
+  },
+  pageUrl: {
     required: true
   }
 });
@@ -10,10 +13,10 @@ defineProps({
 <template>
   <div id="navbar">
     <nav class="navbar navbar-expand-lg navbar-light">
-      <span class="navbar-brand">{{name}}</span>
+      <span class="navbar-brand">{{pageName}}</span>
       <div>
-        <RouterLink to="/create">
-          <button class="btn btn-success">create</button>
+        <RouterLink :to="{name:pageUrl}" class="btn btn-success">
+        ADD
         </RouterLink>
         <button id="delete-product-btn" class="btn btn-danger">mass delete</button>
       </div>

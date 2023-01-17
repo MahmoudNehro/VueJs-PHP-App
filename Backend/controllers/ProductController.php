@@ -3,6 +3,7 @@
 namespace Controllers;
 
 use Models\Product;
+use Requests\ProductRequest;
 
 class ProductController
 {
@@ -47,7 +48,10 @@ class ProductController
     }
     public function store($connection) {
         $product = new Product($connection);
-        
-        $result = $product->create($_POST);
+        $request = new ProductRequest();
+        $validated = $request->validate($_POST);
+        var_dump($validated);
+        die();
+        $result = $product->create($validated);
     }
 }

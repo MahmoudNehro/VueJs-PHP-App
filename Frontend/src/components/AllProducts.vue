@@ -1,13 +1,42 @@
-<script setup>
-import NavBar from "./NavBar.vue";
+<script>
+import NavBar from "@/components/NavBar.vue";
+import RequestService from "../Services/RequestServiceClass.js";
+
+export default {
+  data() {
+    return {
+      products: []
+    };
+  },
+  methods: {
+    getAllProducts() {
+      RequestService.getAll()
+        .then(response => {
+          this.products = response.data;
+          console.log(response.data);
+        })
+        .catch(e => {
+          console.log(e);
+        });
+    }
+  },
+
+  mounted() {
+    this.getAllProducts();
+  }
+};
 </script>
 <template>
   <div>
-    <NavBar name="Product List" />
+    <NavBar pageName="Product List" pageUrl="add-product" />
 
     <div id="wrapper">
       <div class="container">
         <div class="card text-center">
+          <div class="input-group-text">
+            <input type="checkbox" />
+          </div>
+
           <div class="card-body">
             <h5 class="card-title">Special title treatment</h5>
             <p
@@ -114,5 +143,9 @@ import NavBar from "./NavBar.vue";
 .card {
   height: 150px;
   max-height: 250px;
+}
+.input-group-text {
+  background-color: white;
+  border: none;
 }
 </style>
