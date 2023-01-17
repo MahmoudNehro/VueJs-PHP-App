@@ -42,8 +42,8 @@ class ProductRequest implements ValidateContract
                 }
                 if ($rule == 'required' && strpos($key, '*') !== false) {
                     $key = substr($key, 0, strpos($key, '*') - 1);
-                    if (isset($data[$key])) {
-
+                 
+                    if (isset($data[$key]) && is_array($data[$key])) {
                         foreach ($data[$key] as $item) {
                             if (!isset($item['id']) || $item['id'] == '') {
                                 $errors[$key] =  'id is required';

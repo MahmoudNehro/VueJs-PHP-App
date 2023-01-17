@@ -3,6 +3,7 @@
 namespace Controllers;
 
 use Models\Product;
+use Requests\ProductDeleteRequest;
 use Requests\ProductRequest;
 
 class ProductController
@@ -42,15 +43,21 @@ class ProductController
     public function delete($connection)
     {
         $product = new Product($connection);
-        $productIds =  $_GET['product_ids'];
+        $productIds =  $_GET;
+        $request = new ProductDeleteRequest();
+        $validated = $request->validate($productIds);
+        echo (json_encode($validated));
+        die();
+
         $result = $product->deleteAll($productIds);
         // echo(json_encode($result));
     }
-    public function store($connection) {
+    public function store($connection)
+    {
         $product = new Product($connection);
         $request = new ProductRequest();
         $validated = $request->validate($_POST);
-        var_dump($validated);
+        echo (json_encode($validated));
         die();
         $result = $product->create($validated);
     }
