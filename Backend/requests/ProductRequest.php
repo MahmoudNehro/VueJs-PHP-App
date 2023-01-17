@@ -62,7 +62,7 @@ class ProductRequest implements ValidateContract
                         }
                     }
                 }
-                if ($rule == 'unique:products,sku') {
+                if (isset($data[$key]) && $rule == 'unique:products,sku') {
                     $table = substr($rule, strpos($rule, ':') + 1);
                     $table = explode(',', $table);
                     $table = $table[0];

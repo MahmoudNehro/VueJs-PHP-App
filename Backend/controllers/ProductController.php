@@ -67,6 +67,6 @@ class ProductController
             die();
         }
         $result = $product->create($validated);
-        ApiResponse::response($result, 200, 'success');
+        ApiResponse::response($result, 200, 'data created successfully');
     }
 }

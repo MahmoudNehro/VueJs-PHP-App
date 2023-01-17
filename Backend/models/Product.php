@@ -80,7 +80,7 @@ class Product extends Model
     $stmt->bindParam(':category_id', $category_id);
     $stmt->execute();
     $product_id = $this->connection->lastInsertId();
-    
+
     $query = "INSERT INTO attribute_product (product_id, attribute_id, value) VALUES (:product_id, :attribute_id, :value)";
     $stmt = $this->connection->prepare($query);
     foreach ($attributes as $attribute) {
@@ -91,6 +91,7 @@ class Product extends Model
       $stmt->bindParam(':value', $value);
       $stmt->execute();
     }
+    return (bool) $stmt->rowCount();
   }
   public function deleteAll(array $ids)
   {
