@@ -8,13 +8,13 @@ class RequestServiceClass {
 
 
     create(data) {
-        return http.post("/tutorials", data);
+        return http.post("/products", data);
     }
 
 
 
     deleteMass(id) {
-        return http.delete(`/tutorials/${id}`);
+        return http.delete(`/products/delete/${id=[]}`);
     }
 
 

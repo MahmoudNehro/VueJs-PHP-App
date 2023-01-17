@@ -3,8 +3,7 @@ import NavBar from "./NavBar.vue";
 </script>
 <template>
   <div>
-    <NavBar pageName="Product create" pageUrl="product-list" />
-
+    <NavBar pageName="Product create" pageUrl="product-list" > </NavBar>
     <div id="wrapper">
       <div class="container">
         <div class="card text-center">

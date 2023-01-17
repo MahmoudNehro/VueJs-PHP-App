@@ -1,5 +1,5 @@
 <script>
-import NavBar from "@/components/NavBar.vue";
+import NavBar from "../components/NavBar.vue";
 import RequestService from "../Services/RequestServiceClass.js";
 
 export default {
