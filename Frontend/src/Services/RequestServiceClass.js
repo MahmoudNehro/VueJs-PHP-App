@@ -8,7 +8,7 @@ class RequestServiceClass {
         return http.post("/products", { category_id:2, name: "test", price: 100 });
     }
     massDelete(ids) {
-        return http.delete("/products/delete");
+        return http.delete("/products/delete", {params: {product_ids: ids}});
     }
     getAllCategories() {
         return http.get("/categories");

@@ -16,7 +16,6 @@ export default {
       RequestService.getAll()
         .then(response => {
           this.products = response.data.data;
-          console.log(response);
         })
         .catch(e => {
           console.log(e);
@@ -27,9 +26,11 @@ export default {
       let checkboxes = document.querySelectorAll(".delete-checkbox");
       checkboxes.forEach(checkbox => {
         if (checkbox.checked) {
-          productIds.push(checkbox.value);
+          let product_id = parseInt(checkbox.value);
+          productIds.push(product_id);
         }
       });
+      console.log(productIds);
       RequestService.massDelete(productIds)
         .then(response => {
           console.log(response.data);
