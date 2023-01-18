@@ -45,7 +45,7 @@ class ProductController
         $product = new Product($connection);
         $request = new ProductDeleteRequest();
         $errors = $request->validate($_GET);
-        if (count($errors) > 0) {
+        if (count($errors) > 0) {            
             ApiResponse::response($errors, 400, 'error');
             die();
         }

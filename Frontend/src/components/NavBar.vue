@@ -11,7 +11,7 @@ defineProps({
     type: String,
     required: true
   },
- 
+
   massDelete: {
     type: Function,
     required: false
@@ -25,7 +25,8 @@ defineProps({
       <span class="navbar-brand">{{pageName}}</span>
       <div>
         <RouterLink :to="{name:pageUrl}" class="btn btn-success">{{ButtonLabel}}</RouterLink>
-        
+
+        <button id="delete-product-btn" @click="massDelete" class="btn btn-danger">MASS delete</button>
       </div>
     </nav>
     <hr />

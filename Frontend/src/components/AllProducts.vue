@@ -36,25 +36,7 @@ export default {
           this.getAllProducts();
         })
         .catch(e => {
-          console.log(e);
-        });
-    },
-    getAllCategories() {
-      RequestService.getAllCategories()
-        .then(response => {
-          console.log(response.data);
-        })
-        .catch(e => {
-          console.log(e);
-        });
-    },
-    createProduct() {
-      RequestService.create()
-        .then(response => {
-          console.log(response.data);
-        })
-        .catch(e => {
-          console.log(e);
+          console.log(e.response.data.data);
         });
     }
   },
@@ -66,8 +48,8 @@ export default {
 </script>
 <template>
   <div>
-    <NavBar pageName="Product List" pageUrl="add-product" ButtonLabel="Add" />
-    <button id="delete-product-btn" @click="massDelete" class="btn btn-danger">MASS delete</button>
+
+    <NavBar pageName="Product List" :massDelete="massDelete" pageUrl="add-product" ButtonLabel="Add" />
 
     <div id="wrapper">
       <div class="container" v-for="product in products" :key="product.id">

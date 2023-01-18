@@ -2,7 +2,6 @@
 
 namespace Requests;
 
-use Database\MySQLConnection;
 use PDO;
 
 class ProductRequest implements ValidateContract
