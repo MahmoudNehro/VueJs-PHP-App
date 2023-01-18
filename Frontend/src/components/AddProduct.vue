@@ -3,7 +3,7 @@ import NavBar from "./NavBar.vue";
 </script>
 <template>
   <div>
-    <NavBar pageName="Product create" pageUrl="product-list" > </NavBar>
+    <NavBar pageName="Product create" pageUrl="product-list" ButtonLabel="Cancel" > </NavBar>
     <div id="wrapper">
       <div class="container">
         <div class="card text-center">
@@ -15,86 +15,7 @@ import NavBar from "./NavBar.vue";
           </div>
         </div>
       </div>
-      <div class="container">
-        <div class="card text-center">
-          <div class="card-body">
-            <h5 class="card-title">Special title treatment</h5>
-            <p
-              class="card-text"
-            >With supporting text below as a natural lead-in to additional content.</p>
-          </div>
-        </div>
-      </div>
-      <div class="container">
-        <div class="card text-center">
-          <div class="card-body">
-            <h5 class="card-title">Special title treatment</h5>
-            <p
-              class="card-text"
-            >With supporting text below as a natural lead-in to additional content.</p>
-          </div>
-        </div>
-      </div>
-      <div class="container">
-        <div class="card text-center">
-          <div class="card-body">
-            <h5 class="card-title">Special title treatment</h5>
-            <p
-              class="card-text"
-            >With supporting text below as a natural lead-in to additional content.</p>
-          </div>
-        </div>
-      </div>
-      <div class="container">
-        <div class="card text-center">
-          <div class="card-body">
-            <h5 class="card-title">Special title treatment</h5>
-            <p
-              class="card-text"
-            >With supporting text below as a natural lead-in to additional content.</p>
-          </div>
-        </div>
-      </div>
-      <div class="container">
-        <div class="card text-center">
-          <div class="card-body">
-            <h5 class="card-title">Special title treatment</h5>
-            <p
-              class="card-text"
-            >With supporting text below as a natural lead-in to additional content.</p>
-          </div>
-        </div>
-      </div>
-      <div class="container">
-        <div class="card text-center">
-          <div class="card-body">
-            <h5 class="card-title">Special title treatment</h5>
-            <p
-              class="card-text"
-            >With supporting text below as a natural lead-in to additional content.</p>
-          </div>
-        </div>
-      </div>
-      <div class="container">
-        <div class="card text-center">
-          <div class="card-body">
-            <h5 class="card-title">Special title treatment</h5>
-            <p
-              class="card-text"
-            >With supporting text below as a natural lead-in to additional content.</p>
-          </div>
-        </div>
-      </div>
-      <div class="container">
-        <div class="card text-center">
-          <div class="card-body">
-            <h5 class="card-title">Special title treatment</h5>
-            <p
-              class="card-text"
-            >With supporting text below as a natural lead-in to additional content.</p>
-          </div>
-        </div>
-      </div>
+      
     </div>
   </div>
 </template>

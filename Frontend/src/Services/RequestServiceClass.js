@@ -8,13 +8,16 @@ class RequestServiceClass {
 
 
     create(data) {
-        return http.post("/products", data);
+        return http.post("/products", { category_id:2, name: "test", price: 100 });
     }
 
 
 
-    deleteMass(id) {
-        return http.delete(`/products/delete/${id=[]}`);
+    massDelete(ids) {
+        return http.delete("/products/delete", { data: [1,2,3] });
+    }
+    getAllCategories() {
+        return http.get("/categories");
     }
 
 

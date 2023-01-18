@@ -6,6 +6,15 @@ defineProps({
   },
   pageUrl: {
     required: true
+  },
+  ButtonLabel: {
+    type: String,
+    required: true
+  },
+ 
+  massDelete: {
+    type: Function,
+    required: false
   }
 });
 </script>
@@ -15,10 +24,8 @@ defineProps({
     <nav class="navbar navbar-expand-lg navbar-light">
       <span class="navbar-brand">{{pageName}}</span>
       <div>
-        <RouterLink :to="{name:pageUrl}" class="btn btn-success">
-        ADD
-        </RouterLink>
-        <button id="delete-product-btn" class="btn btn-danger">mass delete</button>
+        <RouterLink :to="{name:pageUrl}" class="btn btn-success">{{ButtonLabel}}</RouterLink>
+        
       </div>
     </nav>
     <hr />
@@ -36,5 +43,4 @@ defineProps({
   margin-left: 10px;
   margin-right: 10px;
 }
-
 </style>
