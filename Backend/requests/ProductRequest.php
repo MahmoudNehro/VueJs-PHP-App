@@ -64,10 +64,10 @@ class ProductRequest implements ValidateContract
                                 $errors[$key] = 'id must be numeric';
                             }
                             if (!isset($item['value']) || $item['value'] == '') {
-                                $errors[$key] = 'value is required';
+                                $errors[$key] = 'Value is required';
                             }
                             if (isset($item['value']) && !is_numeric($item['value'])) {
-                                $errors[$key] = 'value must be numeric';
+                                $errors[$key] = 'Value must be valid number';
                             }
                         }
                     }

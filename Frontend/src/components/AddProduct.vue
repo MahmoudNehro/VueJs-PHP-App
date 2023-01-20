@@ -25,7 +25,7 @@ export default {
         });
     },
     getCategory(id) {
-      this.errors.category_id = "";
+      this.errors = {};
       RequestService.getOneCategory(id)
         .then(response => {
           console.log(response.data.data[0]);
@@ -78,7 +78,7 @@ export default {
       ButtonLabel="Cancel"
       :submitFunction="createProduct"
     ></NavBar>
-    <form @submit.prevent="createProduct" class="container">
+    <form @submit.prevent="createProduct" class="container" id="product_form">
       <div class="form-group">
         <label for="sku">SKU</label>
         <input @change="errors.sku=''" class="form-control input" id="sku" v-model="sku" />
@@ -114,7 +114,8 @@ export default {
       </div>
       <span class="text-danger text-center" v-if="errors.category_id">{{errors.category_id.replace("category_id","category")}}</span>
 
-      <div v-for="attribute in optionsData" :key="attribute.attribute_id" class="form-group">
+      <div v-for="attribute in optionsData" :key="attribute.attribute_id" class="form-group" style="display:block!important;">
+        <div class ="d-flex">
         <label for="sku">{{attribute.attribute_name}} ({{attribute.unit_name}})</label>
         <input
           class="form-control"
@@ -122,9 +123,14 @@ export default {
           :data-attribute_id="attribute.attribute_id"
           :id="attribute.attribute_name"
           @change="errors.attributes=''"
+        
         />
+        </div>
+      <p class="fs-6 mt-5" v-if="optionsData.length <2"> Please provide {{attribute.attribute_name}} in {{attribute.unit_name}} </p>
       </div>
       <span class="text-danger d-block" v-if="errors.attributes">{{errors.attributes}}</span>
+      <p class="fs-6 mt-5" v-if="optionsData.length >2"> Please provide Dimensions in CM </p>
+
     </form>
   </div>
 </template>
