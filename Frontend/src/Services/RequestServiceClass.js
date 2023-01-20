@@ -5,15 +5,24 @@ class RequestServiceClass {
         return http.get("/products");
     }
     create(data) {
-        return http.post("/products", { category_id:2, name: "test", price: 100 });
+
+        const config = {
+            headers: {
+                "Content-Type": "multipart/form-data",
+            },
+
+        };
+        return http.post("/products", data, config);
     }
     massDelete(ids) {
-        return http.delete("/products/delete", {params: {product_ids: ids}});
+        return http.delete("/products/delete", { params: { product_ids: ids } });
     }
     getAllCategories() {
         return http.get("/categories");
     }
-
+    getOneCategory(id) {
+        return http.get(`/categories/${id}`);
+    }
 
 }
 

@@ -36,9 +36,6 @@ class Product extends Model
     $i = 0;
     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
       extract($row);
-      if (isset($attributes[$i - 1]) && $attributes[$i - 1]['product_id'] != $id) {
-        unset($attributes[$i - 1]);
-      }
       $attributeItem = array(
         'product_id' => $id,
         'attribute_name' => $attribute_name,
@@ -46,8 +43,12 @@ class Product extends Model
         'value' => $value
 
       );
-
       array_push($attributes, $attributeItem);
+      foreach ($attributes as $key => $attribute) {
+        if ($attribute['product_id'] != $id) {
+          unset($attributes[$key]);
+        }
+      }
 
       $product_item = array(
         'id' => $id,
@@ -62,6 +63,7 @@ class Product extends Model
       $products_array['data'][$id] =  $product_item;
       $i++;
     }
+
     return array_values($products_array['data']);
   }
   public function create(array $data)

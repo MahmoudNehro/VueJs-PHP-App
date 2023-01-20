@@ -30,10 +30,8 @@ export default {
           productIds.push(product_id);
         }
       });
-      console.log(productIds);
       RequestService.massDelete(productIds)
         .then(response => {
-          console.log(response.data);
           this.getAllProducts();
         })
         .catch(e => {
@@ -56,7 +54,7 @@ export default {
       <div class="container" v-for="product in products" :key="product.id">
         <div class="card text-center">
           <div class="input-group-text">
-            <input type="checkbox" :value="product.id" class="delete-checkbox" name="product_ids[]" />
+            <input type="checkbox" :value="product.id" class="delete-checkbox"  />
           </div>
 
           <div class="card-body">
