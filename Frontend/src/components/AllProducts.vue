@@ -12,6 +12,9 @@ export default {
     };
   },
   methods: {
+    ucFirst(string) {
+      return string.charAt(0).toUpperCase() + string.slice(1);
+    },
     getAllProducts() {
       RequestService.getAll()
         .then(response => {
@@ -75,15 +78,14 @@ export default {
               <ul class="product-attributes dimensions" v-if="product.attribute_items.length > 1">
                 Dimensions:
                 <li v-for="(attribute, index) in product.attribute_items" :key="attribute.id">
-                  {{attribute.value}}
-                  <span v-if="index<2">x</span>
+                  {{attribute.value}}<span v-if="index<2">x</span>
                 </li>
               </ul>
               <ul class="product-attributes" v-if="product.attribute_items.length < 3">
                 <li
                   v-for="attribute in product.attribute_items"
                   :key="attribute.id"
-                >{{attribute.attribute_name}}: {{attribute.value}} {{attribute.unit_name}}</li>
+                >{{ucFirst(attribute.attribute_name)}}: {{attribute.value}} {{attribute.unit_name}}</li>
               </ul>
             </div>
           </div>
