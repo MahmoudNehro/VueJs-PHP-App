@@ -8,12 +8,12 @@ class ProductRequest implements ValidateContract
 {
 
 
-    public function __construct(protected ?array $rules = null , protected ?PDO $connection= null)
+    public function __construct(protected ?array $rules = null, protected ?PDO $connection = null)
     {
         $this->rules = $this->rules ?? [
             'name' => 'required',
             'sku' => 'required|unique:products,sku',
-            'price' => 'required|numeric',
+            'price' => 'required|decimal',
             'category_id' => 'required|numeric',
             'attributes' => 'array|required',
             'attributes.*.id' => 'required',
@@ -37,6 +37,16 @@ class ProductRequest implements ValidateContract
                         $errors[$key] = $key . ' must be numeric';
                     }
                 }
+                if ($rule == 'decimal') {
+                    $data[$key] = (float) $data[$key];
+
+                    if (isset($data[$key]) && !is_float($data[$key])) {
+                        $errors[$key] = $key . ' must be decimal';
+                    }
+                    if (isset($data[$key]) && $data[$key] <= 0) {
+                        $errors[$key] = $key . ' must be valid number';
+                    }
+                }
                 if ($rule == 'array') {
                     if (isset($data[$key]) && !is_array($data[$key])) {
                         $errors[$key] = $key . ' must be array';
@@ -44,7 +54,7 @@ class ProductRequest implements ValidateContract
                 }
                 if ($rule == 'required' && strpos($key, '*') !== false) {
                     $key = substr($key, 0, strpos($key, '*') - 1);
-                 
+
                     if (isset($data[$key]) && is_array($data[$key])) {
                         foreach ($data[$key] as $item) {
                             if (!isset($item['id']) || $item['id'] == '') {

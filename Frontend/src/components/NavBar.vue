@@ -11,8 +11,15 @@ defineProps({
     type: String,
     required: true
   },
-
   massDelete: {
+    type: Function,
+    required: false
+  },
+  deleteActive: {
+    type: Boolean,
+    required: false,
+  },
+  submitFunction: {
     type: Function,
     required: false
   }
@@ -23,10 +30,19 @@ defineProps({
   <div id="navbar">
     <nav class="navbar navbar-expand-lg navbar-light">
       <span class="navbar-brand">{{pageName}}</span>
+            <span class="text-center text-danger d-none" id="delete-error"> Please choose products </span>
+
       <div>
         <RouterLink :to="{name:pageUrl}" class="btn btn-success">{{ButtonLabel}}</RouterLink>
 
-        <button id="delete-product-btn" @click="massDelete" class="btn btn-danger">MASS delete</button>
+        <button
+          v-if="deleteActive"
+          id="delete-product-btn"
+          @click="massDelete"
+          class="btn btn-danger"
+        >MASS delete</button>
+
+        <button v-if="!deleteActive" @click="submitFunction" class="btn btn-primary mx-2">Save</button>
       </div>
     </nav>
     <hr />

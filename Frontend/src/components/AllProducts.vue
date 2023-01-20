@@ -24,19 +24,25 @@ export default {
     massDelete() {
       let productIds = [];
       let checkboxes = document.querySelectorAll(".delete-checkbox");
+      let deleteError = document.querySelector("#delete-error");
       checkboxes.forEach(checkbox => {
         if (checkbox.checked) {
           let product_id = parseInt(checkbox.value);
           productIds.push(product_id);
         }
       });
-      RequestService.massDelete(productIds)
-        .then(response => {
-          this.getAllProducts();
-        })
-        .catch(e => {
-          console.log(e.response.data.data);
-        });
+      if (productIds.length == 0) {
+        deleteError.classList.remove("d-none");
+      } else {
+        deleteError.classList.add("d-none");
+        RequestService.massDelete(productIds)
+          .then(response => {
+            this.getAllProducts();
+          })
+          .catch(e => {
+            console.log(e.response.data.data);
+          });
+      }
     }
   },
 
@@ -47,22 +53,33 @@ export default {
 </script>
 <template>
   <div>
-
-    <NavBar pageName="Product List" :massDelete="massDelete" pageUrl="add-product" ButtonLabel="Add" />
-
+    <NavBar
+      pageName="Product List"
+      :massDelete="massDelete"
+      pageUrl="add-product"
+      ButtonLabel="Add"
+      :deleteActive="true"
+    />
     <div id="wrapper">
       <div class="container" v-for="product in products" :key="product.id">
         <div class="card text-center">
           <div class="input-group-text">
-            <input type="checkbox" :value="product.id" class="delete-checkbox"  />
+            <input type="checkbox" :value="product.id" class="delete-checkbox" />
           </div>
 
           <div class="card-body">
             <h5 class="card-title">{{product.sku}}</h5>
             <div class="card-text">
-              <p>{{product.name}}</p>
-              <p>{{ Math.round(product.price,2)}} $</p>
-              <ul>
+              <p class="product-list">{{product.name}}</p>
+              <p class="product-list">{{ product.price}} $</p>
+              <ul class="product-attributes dimensions" v-if="product.attribute_items.length > 1">
+                Dimensions:
+                <li v-for="(attribute, index) in product.attribute_items" :key="attribute.id">
+                  {{attribute.value}}
+                  <span v-if="index<2">x</span>
+                </li>
+              </ul>
+              <ul class="product-attributes" v-if="product.attribute_items.length < 3">
                 <li
                   v-for="attribute in product.attribute_items"
                   :key="attribute.id"
@@ -79,13 +96,13 @@ export default {
 <style scoped>
 .container {
   width: 329px;
-  height: 200px;
+  height: 250px;
   margin: auto;
 }
 #wrapper {
   display: flex;
   flex-wrap: wrap;
-  margin-top: 20px;
+  margin: 40px;
 }
 .card {
   height: 200px;
@@ -101,5 +118,22 @@ li {
 ul {
   display: flex;
   justify-content: space-around;
+}
+.product-list {
+  margin: 0;
+}
+.product-attributes {
+  padding: 0;
+}
+.dimensions {
+  display: block;
+}
+.dimensions li {
+  display: inline;
+}
+.delete-checkbox {
+  position: relative;
+  top: 15px;
+  left: 25px;
 }
 </style>

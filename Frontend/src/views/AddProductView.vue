@@ -9,13 +9,5 @@ import AddProduct from '../components/AddProduct.vue'
 </template>
 
 <style>
-@media (min-width: 1024px) {
-  .about {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    margin-right: 70px;
-    margin-left: 70px;
-  }
-}
+
 </style>

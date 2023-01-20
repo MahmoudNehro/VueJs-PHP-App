@@ -7,11 +7,11 @@ export default {
     return {
       categories: [],
       optionsData: [],
-      category_id: 0,
+      category_id: "",
       name: "",
       sku: "",
-      price: 0,
-      category_id: 0
+      price: "",
+      errors: {}
     };
   },
   methods: {
@@ -25,7 +25,7 @@ export default {
         });
     },
     getCategory(id) {
-      console.log(id);
+      this.errors.category_id = "";
       RequestService.getOneCategory(id)
         .then(response => {
           console.log(response.data.data[0]);
@@ -50,16 +50,17 @@ export default {
       let product = {
         name: this.name,
         sku: this.sku,
-        price: parseInt(this.price),
+        price: parseFloat(this.price),
         category_id: parseInt(this.category_id),
         attributes: attributes
       };
       RequestService.create(product)
         .then(response => {
-          console.log(response.data.data);
+          this.$router.push("/");
         })
         .catch(e => {
-          console.log(e);
+          let errors = e.response.data.data;
+          this.errors = errors;
         });
     }
   },
@@ -71,66 +72,82 @@ export default {
 </script>
 <template>
   <div>
-    <NavBar pageName="Product Add" pageUrl="product-list" ButtonLabel="Cancel"></NavBar>
-    <div id="wrapper">
-      <form  @submit.prevent="createProduct">
-        <div class="form-group">
-          <label for="sku">SKU</label>
-          <input class="form-control" id="sku" v-model="sku" />
-        </div>
-        <div class="form-group">
-          <label for="sku">Name</label>
-          <input class="form-control" id="name" v-model="name" />
-        </div>
-        <div class="form-group">
-          <label for="sku">Price($)</label>
-          <input class="form-control" id="price" v-model="price" />
-        </div>
+    <NavBar
+      pageName="Product Add"
+      pageUrl="product-list"
+      ButtonLabel="Cancel"
+      :submitFunction="createProduct"
+    ></NavBar>
+    <form @submit.prevent="createProduct" class="container">
+      <div class="form-group">
+        <label for="sku">SKU</label>
+        <input @change="errors.sku=''" class="form-control input" id="sku" v-model="sku" />
+      </div>
+      <span class="text-danger text-center" v-if="errors.sku">{{errors.sku}}</span>
 
-        <div class="form-group">
-          <label for="type">Type Switcher</label>
-          <select
-            class="form-control"
-            id="productType"
-            v-model="category_id"
-            @change="getCategory(category_id)"
-          >
-            <option
-              v-for="category in categories"
-              :key="category.id"
-              :value="category.id"
-            >{{category.name}}</option>
-          </select>
-        </div>
-        <div v-for="attribute in optionsData" :key="attribute.attribute_id" class="form-group">
-          <label for="sku">{{attribute.attribute_name}} ({{attribute.unit_name}})</label>
-          <input
-            class="form-control"
-            name="attributes[]"
-            :data-attribute_id="attribute.attribute_id"
-            :id="attribute.attribute_name"
-          />
-        </div>
+      <div class="form-group">
+        <label for="sku">Name</label>
+        <input @change="errors.name=''" class="form-control input" id="name" v-model="name" />
+      </div>
+      <span class="text-danger text-center" v-if="errors.name">{{errors.name}}</span>
 
-        <button  class="btn btn-primary">Save</button>
-      </form>
-    </div>
+      <div class="form-group">
+        <label for="sku">Price ($)</label>
+        <input @change="errors.price=''" class="form-control input" id="price" v-model="price" />
+      </div>
+      <span class="text-danger text-center" v-if="errors.price">{{errors.price}}</span>
+
+      <div class="form-group">
+        <label for="type">Type Switcher</label>
+        <select
+          class="form-control"
+          id="productType"
+          v-model="category_id"
+          @change="getCategory(category_id)"
+        >
+          <option
+            v-for="category in categories"
+            :key="category.id"
+            :value="category.id"
+          >{{category.name}}</option>
+        </select>
+      </div>
+      <span class="text-danger text-center" v-if="errors.category_id">{{errors.category_id.replace("category_id","category")}}</span>
+
+      <div v-for="attribute in optionsData" :key="attribute.attribute_id" class="form-group">
+        <label for="sku">{{attribute.attribute_name}} ({{attribute.unit_name}})</label>
+        <input
+          class="form-control"
+          name="attributes[]"
+          :data-attribute_id="attribute.attribute_id"
+          :id="attribute.attribute_name"
+          @change="errors.attributes=''"
+        />
+      </div>
+      <span class="text-danger d-block" v-if="errors.attributes">{{errors.attributes}}</span>
+    </form>
   </div>
 </template>
 
 <style scoped>
-.container {
-  width: 329px;
-  height: 200px;
-  margin: auto;
-}
-#wrapper {
-  display: flex;
-  flex-wrap: wrap;
-  margin-top: 20px;
+form {
+  width: 270px;
+  margin-left: 20px;
 }
 .card {
   height: 150px;
   max-height: 250px;
+}
+.form-group {
+  display: flex;
+  margin-top: 20px;
+}
+.form-group label {
+  width: 200px;
+  margin-right: 20px;
+}
+.form-group .input {
+  width: 170px;
+  height: 30px;
 }
 </style>
