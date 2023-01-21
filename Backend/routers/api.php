@@ -10,11 +10,11 @@ $url = isset($_SERVER['REDIRECT_URL']) ? $_SERVER['REDIRECT_URL'] : $_SERVER['RE
 $request = explode("/",$url );
 $method = strtolower($_SERVER['REQUEST_METHOD']);
 
-if (!in_array($request[0], array_column(Urls::cases(), 'value'))) {
+if (!in_array($request[1], array_column(Urls::cases(), 'value'))) {
     ApiResponse::response('not found', 404, 'url not found');
     die();
 }
-switch ($request[0]) {
+switch ($request[1]) {
     case BaseUrl::PRODUCTS->value:
         include __DIR__ . '/products.php';
         break;
