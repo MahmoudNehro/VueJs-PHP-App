@@ -40,7 +40,7 @@ defineProps({
           id="delete-product-btn"
           @click="massDelete"
           class="btn btn-danger"
-        >MASS delete</button>
+        >MASS DELETE</button>
 
         <button v-if="!deleteActive" @click="submitFunction" class="btn btn-primary mx-2">Save</button>
       </div>

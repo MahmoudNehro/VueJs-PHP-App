@@ -60,7 +60,7 @@ export default {
       pageName="Product List"
       :massDelete="massDelete"
       pageUrl="add-product"
-      ButtonLabel="Add"
+      ButtonLabel="ADD"
       :deleteActive="true"
     />
     <div id="wrapper">
