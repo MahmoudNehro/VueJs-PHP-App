@@ -9,7 +9,7 @@ $categoryController = CategoryController::getInstance();
 
 switch ($method) {
     case Methods::GET->value:
-        $param = isset($request[1]) ? $request[1] : null;
+        $param = isset($request[2]) ? $request[2] : null;
         if ($param) {
             Router::get(Urls::CATEGORY->value, function () use ($categoryController, $connection , $param) {
                 $categoryController->show($connection, $param);

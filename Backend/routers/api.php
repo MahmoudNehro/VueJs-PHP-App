@@ -4,7 +4,10 @@ use Config\BaseUrl;
 use Config\Urls;
 use Helpers\ApiResponse;
 
-$request = explode("/", substr(@$_SERVER['PATH_INFO'], 1));
+$url = isset($_SERVER['REDIRECT_URL']) ? $_SERVER['REDIRECT_URL'] : $_SERVER['REQUEST_URI'];
+
+
+$request = explode("/",$url );
 $method = strtolower($_SERVER['REQUEST_METHOD']);
 
 if (!in_array($request[0], array_column(Urls::cases(), 'value'))) {
