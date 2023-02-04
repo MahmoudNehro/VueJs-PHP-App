@@ -20,7 +20,7 @@ class ProductCrud extends Model
         throw new \RuntimeException('Incorrect product type');
       }
   
-      $className = "Models\\" . $lookupArray[$type];
+      $className = "Models\\Product\\" . $lookupArray[$type];
   
       return (new $className($this->connection))->create($data);
     }
