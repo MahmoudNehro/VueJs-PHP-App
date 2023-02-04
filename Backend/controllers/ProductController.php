@@ -2,10 +2,11 @@
 
 namespace Controllers;
 
-use Models\Product;
+use Helpers\ApiResponse;
+use Models\Product\ProductCrud;
+use Models\Product\ProductList;
 use Requests\ProductDeleteRequest;
 use Requests\ProductRequest;
-use Helpers\ApiResponse;
 
 class ProductController
 {
@@ -36,16 +37,16 @@ class ProductController
 
     public function index($connection)
     {
-        $product = new Product($connection);
+        $product = new ProductList($connection);
         $result = $product->all();
         ApiResponse::response($result, 200, 'success');
     }
     public function delete($connection)
     {
-        $product = new Product($connection);
+        $product = new ProductCrud($connection);
         $request = new ProductDeleteRequest();
         $errors = $request->validate($_GET);
-        if (count($errors) > 0) {            
+        if (count($errors) > 0) {
             ApiResponse::response($errors, 400, 'error');
             die();
         }
@@ -59,14 +60,15 @@ class ProductController
     }
     public function store($connection)
     {
-        $product = new Product($connection);
-        $request = new ProductRequest(null,$connection);
-        $validated = $request->validate($_POST);
-        if (count($validated) > 0) {
-            ApiResponse::response($validated, 400, 'error');
+        $product = new ProductCrud($connection);
+
+        $request = new ProductRequest(null, $connection);
+        $errors = $request->validate($_POST);
+        if (count($errors) > 0) {
+            ApiResponse::response($errors, 400, 'error');
             die();
         }
-        $result = $product->create($validated);
+        $result =  $product->createProduct($_POST['category_id'], $_POST);
         ApiResponse::response($result, 200, 'data created successfully');
     }
 }

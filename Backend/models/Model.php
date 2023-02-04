@@ -36,7 +36,5 @@ abstract class Model
     {
         $this->connection = $connection;
     }
-    abstract public function all();
-    abstract public function create(array $data);
-    abstract public function deleteAll(array $ids);
+
 }

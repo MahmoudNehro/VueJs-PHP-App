@@ -9,7 +9,8 @@
                   "Config\\" : "config/",
                   "Controllers\\" : "controllers/",
                   "Requests\\" : "requests/",
-                  "Helpers\\" : "helpers/"
+                  "Helpers\\" : "helpers/",
+                  "Models\\Product\\" : "models/product"
               }
        }
 }
